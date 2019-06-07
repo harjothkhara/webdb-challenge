@@ -16,13 +16,25 @@ async function find() {
 async function findById(id) {
     const project = await db("projects")
         .select({
-            name: "projects.name",
             id: "project.id",
-            actions: "actions.name"
+            name: "projects.name",
+            description: "projects.description",
+            completed: "projects.completed"
         })
-        .innerJoin("actions", "actions.project_id", "projects.id")
         .where({ "projects.id": id })
         .first();
+
+        projects.actions = await db("actions")
+            .select({
+                id: "actions.id",
+                description: "actions.description",
+                notes: "actions.notes",
+                completed: "actions.completed"
+            })
+            .where({
+                "actions.project_id": id
+            });
+
     return project;
 }
 
@@ -47,10 +59,10 @@ async function remove(id) {
 }
 
 async function update(item, id) {
-    const editedproject = await db("projects")
+    const editedProject = await db("projects")
         .where({ id })
         .update(item);
-    if (editedproject) {
+    if (editedProject) {
         const project = await findById(id);
         return project;
     }

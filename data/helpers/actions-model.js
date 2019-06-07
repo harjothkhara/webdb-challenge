@@ -15,7 +15,7 @@ async function find() {
 
 async function findById(id) {
     const action = await db("actions")
-        .where({ "actions.id": id })
+        .where({ id })
         .first();
     return action;
 }
