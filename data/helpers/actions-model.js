@@ -10,6 +10,11 @@ module.exports = {
 
 async function find() {
     const actions = await db("actions");
+    actions.forEach(action => 
+        action.completed === 1
+       ? (action.completed = true)
+       : (action.completed = false) 
+    );
     return actions;
 }
 
@@ -17,6 +22,9 @@ async function findById(id) {
     const action = await db("actions")
         .where({ id })
         .first();
+    action.completed === 1
+       ? (action.completed = true)
+       : (action.completed = false);
     return action;
 }
 

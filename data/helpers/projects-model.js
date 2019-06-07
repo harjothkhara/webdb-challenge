@@ -10,6 +10,12 @@ module.exports = {
 
 async function find() {
     const projects = await db("projects");
+    projects.forEach(project => 
+        project.completed === 1
+       ? (project.completed = true)
+       : (project.completed = false) 
+    );
+
     return projects;
 }
 
@@ -34,6 +40,15 @@ async function findById(id) {
             .where({
                 "actions.project_id": id
             });
+            project.completed === 1
+            ? (project.completed = true)
+            : (project.completed = false);
+
+            project.actions.forEach(action =>
+            action.completed === 1
+              ? (action.completed = true)
+              : (action.completed = false)
+          );
 
     return project;
 }
@@ -42,6 +57,9 @@ async function create(item) {
     const [id] = await db("projects").insert(item);
     if(id) {
         const project = await findById(id);
+        project.completed === 1
+      ? (project.completed = true)
+      : (project.completed = false);
         return project;
     }
 }
