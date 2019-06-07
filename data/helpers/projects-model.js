@@ -16,7 +16,7 @@ async function find() {
 async function findById(id) {
     const project = await db("projects")
         .select({
-            id: "project.id",
+            id: "projects.id",
             name: "projects.name",
             description: "projects.description",
             completed: "projects.completed"
@@ -24,7 +24,7 @@ async function findById(id) {
         .where({ "projects.id": id })
         .first();
 
-        projects.actions = await db("actions")
+        project.actions = await db("actions")
             .select({
                 id: "actions.id",
                 description: "actions.description",
